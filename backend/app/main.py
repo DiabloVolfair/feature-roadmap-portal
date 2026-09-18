@@ -17,6 +17,7 @@ from starlette.responses import JSONResponse
 
 from app.api.v1 import api_router
 from app.core.cors import configure_cors
+from app.core.exceptions import AuthException
 from app.db.mongodb import close_mongo_connection, connect_to_mongo
 from app.utils.responses import error_response
 
@@ -54,6 +55,18 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
         content=error_response(
             message=str(exc.detail),
             errors=[str(exc.detail)],
+        ),
+    )
+
+
+@app.exception_handler(AuthException)
+async def auth_exception_handler(request: Request, exc: AuthException) -> JSONResponse:
+    """Translate any AuthException subclass into the error envelope (Req 18.8)."""
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=error_response(
+            message=exc.message,
+            errors=exc.errors,
         ),
     )
 

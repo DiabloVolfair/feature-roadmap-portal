@@ -3,7 +3,7 @@
 Asserts that unsetting/blanking each required environment variable causes
 constructing Settings() to raise a pydantic ValidationError at startup.
 
-Requirements: 9.5
+Requirements: 1.4, 9.5
 """
 
 import pytest
@@ -14,6 +14,8 @@ from app.core.config import Settings
 # A complete set of valid values for every required field, used as the
 # baseline that each test overrides one field of.
 VALID_ENV = {
+    "project_name": "Feature Roadmap Portal",
+    "api_prefix": "/api/v1",
     "mongodb_uri": "mongodb://localhost:27017",
     "database_name": "test_db",
     "jwt_secret": "test-secret",
@@ -22,12 +24,18 @@ VALID_ENV = {
 }
 
 REQUIRED_FIELDS = [
+    "project_name",
+    "api_prefix",
     "mongodb_uri",
     "database_name",
     "jwt_secret",
     "jwt_refresh_secret",
     "frontend_url",
 ]
+
+# Fields that additionally reject empty/whitespace-only values, not just
+# unset values (Requirement 1.4).
+BLANK_VALIDATED_FIELDS = ["project_name", "api_prefix"]
 
 
 def test_settings_constructs_successfully_with_all_required_fields_present():
@@ -53,3 +61,63 @@ def test_settings_raises_validation_error_when_required_field_is_unset(
         Settings(_env_file=None)
 
     assert missing_field in str(exc_info.value)
+
+
+@pytest.mark.parametrize("blank_field", BLANK_VALIDATED_FIELDS)
+@pytest.mark.parametrize("blank_value", ["", "   ", "\t\n"])
+def test_settings_raises_validation_error_when_field_is_empty_or_whitespace(
+    blank_field, blank_value, monkeypatch
+):
+    """Setting PROJECT_NAME/API_PREFIX to an empty or whitespace-only string
+    raises a pydantic ValidationError naming the affected field (Requirement
+    1.4)."""
+    for field, value in VALID_ENV.items():
+        monkeypatch.setenv(field.upper(), value)
+    monkeypatch.setenv(blank_field.upper(), blank_value)
+
+    with pytest.raises(ValidationError) as exc_info:
+        Settings(_env_file=None)
+
+    assert blank_field in str(exc_info.value)
+
+
+def test_settings_raises_validation_error_naming_both_fields_when_both_blank(
+    monkeypatch,
+):
+    """When both PROJECT_NAME and API_PREFIX are unset/blank, the raised
+    ValidationError identifies both affected variable names (Requirement
+    1.4)."""
+    for field, value in VALID_ENV.items():
+        monkeypatch.setenv(field.upper(), value)
+    monkeypatch.setenv("PROJECT_NAME", "   ")
+    monkeypatch.delenv("API_PREFIX", raising=False)
+
+    with pytest.raises(ValidationError) as exc_info:
+        Settings(_env_file=None)
+
+    error_text = str(exc_info.value)
+    assert "project_name" in error_text
+    assert "api_prefix" in error_text
+
+
+@pytest.mark.parametrize(
+    "project_name,api_prefix",
+    [
+        ("Feature Roadmap Portal", "/api/v1"),
+        ("  Feature Roadmap Portal  ", "  /api/v1  "),
+    ],
+)
+def test_settings_loads_valid_project_name_and_api_prefix(
+    project_name, api_prefix, monkeypatch
+):
+    """Valid (including surrounding-whitespace) PROJECT_NAME/API_PREFIX
+    values load successfully and are stripped."""
+    for field, value in VALID_ENV.items():
+        monkeypatch.setenv(field.upper(), value)
+    monkeypatch.setenv("PROJECT_NAME", project_name)
+    monkeypatch.setenv("API_PREFIX", api_prefix)
+
+    settings = Settings(_env_file=None)
+
+    assert settings.project_name == project_name.strip()
+    assert settings.api_prefix == api_prefix.strip()

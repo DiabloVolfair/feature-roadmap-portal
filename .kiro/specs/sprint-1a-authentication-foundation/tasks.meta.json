@@ -1,0 +1,498 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Extend `Settings` in `backend/app/core/config.py`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725758153
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725775052
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726042892
+      }
+    ],
+    "1.2 Write unit tests for Settings validation of `PROJECT_NAME`/`API_PREFIX` (extend `backend/tests/test_config.py`)": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725758351
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726168155
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726332602
+      }
+    ],
+    "2.1 Implement `backend/app/models/user.py`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725758504
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725776115
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726043916
+      }
+    ],
+    "3.1 Implement `backend/app/core/security.py`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725758636
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725776849
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726044652
+      }
+    ],
+    "4.1 Implement `backend/app/services/user_service.py`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725758781
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726169048
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726329492
+      }
+    ],
+    "5.1 Implement `backend/app/core/exceptions.py`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725758970
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725777974
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726045757
+      }
+    ],
+    "5.2 Register the `AuthException` handler in `backend/app/main.py`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725759121
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726170081
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726331356
+      }
+    ],
+    "6.1 Implement `backend/app/services/auth_service.py`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725759230
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726434890
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726580435
+      }
+    ],
+    "7.1 Implement `backend/app/middleware/auth.py`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725759322
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726628736
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726730726
+      }
+    ],
+    "8.1 Implement `backend/app/api/v1/auth.py`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725759449
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726752535
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726950159
+      }
+    ],
+    "8.2 Wire `auth.router` into `backend/app/api/v1/__init__.py`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725759540
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726974439
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789727103873
+      }
+    ],
+    "9. Checkpoint - Ensure all backend tests pass": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725759660
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789727126285
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789727214486
+      }
+    ],
+    "10.1 Extend `frontend/src/services/httpClient.js`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725759756
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725778668
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726156813
+      }
+    ],
+    "11.1 Implement `frontend/src/services/authService.js`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725759885
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726170868
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726330593
+      }
+    ],
+    "12.1 Implement `frontend/src/context/AuthContext.jsx`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725760008
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726629546
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726731302
+      }
+    ],
+    "13.1 Implement `frontend/src/pages/LoginPage.jsx`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725760120
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726753539
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726951612
+      }
+    ],
+    "14.1 Implement `frontend/src/pages/SignupPage.jsx`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725760215
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726754637
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726952455
+      }
+    ],
+    "15.1 Extend `frontend/src/components/Navbar.jsx`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725760315
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726755190
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726950748
+      }
+    ],
+    "16.1 Update `frontend/src/App.jsx` to wrap `Routes` in `AuthProvider`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725760382
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726975409
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789727104634
+      }
+    ],
+    "17.1 Update `backend/.env.example`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725760441
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725779583
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726046484
+      }
+    ],
+    "18.1 Update `README.md`": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725760506
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789727126661
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789727215027
+      }
+    ],
+    "19. Final checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789725760579
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789727239662
+      },
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789727378895
+      }
+    ],
+    "2. Implement User_Model schemas": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726044011
+      }
+    ],
+    "3. Implement the Security_Module": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726044761
+      }
+    ],
+    "17. Update the environment example file": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726046614
+      }
+    ],
+    "10. Extend the frontend HTTP_Client for authenticated requests": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726156940
+      }
+    ],
+    "4. Implement the User_Service": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726329632
+      }
+    ],
+    "11. Implement the Frontend_Auth_Service": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726330694
+      }
+    ],
+    "5. Implement Auth exceptions and register the exception handler": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726331469
+      }
+    ],
+    "1. Extend backend Settings for authentication configuration": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726332719
+      }
+    ],
+    "6. Implement the Auth_Service": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726580606
+      }
+    ],
+    "7. Implement the Auth_Middleware": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726730991
+      }
+    ],
+    "12. Implement the Auth_Context": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726731392
+      }
+    ],
+    "15. Update the Navbar for authentication state": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726950924
+      }
+    ],
+    "13. Implement the LoginPage": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726951734
+      }
+    ],
+    "14. Implement the SignupPage": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789726952567
+      }
+    ],
+    "8. Implement the Auth_API routes": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789727104018
+      }
+    ],
+    "16. Wire the AuthProvider into the application": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789727104765
+      }
+    ],
+    "18. Write README Sprint 1A Authentication documentation": [
+      {
+        "executionId": "04c48629-c6a2-4dee-a44a-d64fc93b67ec",
+        "chatSessionId": "sess_365a7783-9eb0-4aac-bd71-47a08a83f8c9",
+        "timestamp": 1789727215130
+      }
+    ]
+  }
+}
