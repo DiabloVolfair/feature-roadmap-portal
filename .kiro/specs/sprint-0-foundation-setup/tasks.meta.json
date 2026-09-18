@@ -1,0 +1,703 @@
+{
+  "pbtResults": {
+    "2.3 Write property test for success envelope shape": {
+      "status": "passed",
+      "lastRunTimestamp": 1789715812133
+    }
+  },
+  "executionHistory": {
+    "1.1 Create root `.gitignore`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714790276
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714805257
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715420130
+      }
+    ],
+    "1.2 Create `backend/.env.example`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714790787
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714805975
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715421183
+      }
+    ],
+    "1.3 Create `backend/requirements.txt`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714790869
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714806728
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715421806
+      }
+    ],
+    "2.1 Implement Settings configuration in `backend/app/core/config.py`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714790934
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715429428
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715629079
+      }
+    ],
+    "2.2 Implement `success_response()`/`error_response()` in `backend/app/utils/responses.py`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714790979
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715430213
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715630200
+      }
+    ],
+    "2.3 Write property test for success envelope shape": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791040
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715641147
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715867588
+      }
+    ],
+    "2.4 Write property test for error envelope shape": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791085
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715641860
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715866814
+      }
+    ],
+    "3.1 Implement `configure_cors()` in `backend/app/core/cors.py`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791131
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715638912
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715864951
+      }
+    ],
+    "3.2 Write property test for CORS allow/deny decision": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791189
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715997805
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716287785
+      }
+    ],
+    "4.1 Implement `connect_to_mongo()`/`close_mongo_connection()` in `backend/app/db/mongodb.py`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791233
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715640020
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715865702
+      }
+    ],
+    "4.2 Write unit tests for the Database_Connector": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791278
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715998621
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716285758
+      }
+    ],
+    "5.1 Implement `backend/app/api/v1/health.py` and `backend/app/api/v1/__init__.py`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791318
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715642722
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715863858
+      }
+    ],
+    "5.2 Write unit tests for the Health_Endpoint": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791360
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715999612
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716283911
+      }
+    ],
+    "6.1 Implement `backend/app/main.py` app factory and lifespan": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791399
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716000707
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716288086
+      }
+    ],
+    "6.2 Implement exception handlers in `backend/app/main.py`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791464
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716632301
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716744607
+      }
+    ],
+    "6.3 Write unit tests for exception handlers and settings validation": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791503
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716811626
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717180776
+      }
+    ],
+    "7. Checkpoint - Ensure all backend tests pass": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791545
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717295148
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717385437
+      }
+    ],
+    "8.1 Scaffold the Vite + React project with Tailwind CSS": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791590
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715431074
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715630936
+      }
+    ],
+    "8.2 Configure the Axios HTTP_Client in `frontend/src/services/httpClient.js`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791630
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715874520
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715987835
+      }
+    ],
+    "8.3 Configure `QueryClientProvider` and `Toaster` in `frontend/src/main.jsx`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791667
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715875558
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715989776
+      }
+    ],
+    "9.1 Implement `frontend/src/services/healthService.js`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791724
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716001268
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716284962
+      }
+    ],
+    "9.2 Write unit test for `mapHealthState`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791770
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716633268
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716745346
+      }
+    ],
+    "9.3 Implement `frontend/src/hooks/useHealthCheck.js`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791807
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716634033
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716804316
+      }
+    ],
+    "10.1 Implement `frontend/src/components/BackendStatusCard.jsx`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791844
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716812667
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717181764
+      }
+    ],
+    "10.2 Write unit tests for BackendStatusCard": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791886
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717386550
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717464205
+      }
+    ],
+    "11.1 Implement `frontend/src/pages/HomePage.jsx`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791927
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717387284
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717464984
+      }
+    ],
+    "11.2 Write unit tests for HomePage content": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714791964
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717472758
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717628958
+      }
+    ],
+    "12.1 Implement `LoginPage.jsx`, `SignupPage.jsx`, `RoadmapPage.jsx`, and `NotFoundPage.jsx` in `frontend/src/pages/`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714792024
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715876791
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715990746
+      }
+    ],
+    "13.1 Implement `frontend/src/components/Layout.jsx`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714792070
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715878978
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715986780
+      }
+    ],
+    "13.2 Implement `frontend/src/components/Navbar.jsx`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714792126
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715879021
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715988670
+      }
+    ],
+    "13.3 Write unit tests for Navbar": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714792170
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716294351
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716625104
+      }
+    ],
+    "14.1 Implement the Router in `frontend/src/App.jsx`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714792214
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717472160
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717555248
+      }
+    ],
+    "14.2 Write unit tests for routing": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714792256
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717635614
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717731629
+      }
+    ],
+    "15. Final checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714792298
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717898974
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717986703
+      }
+    ],
+    "16.1 Write `README.md`": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789714792342
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717764623
+      },
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717892110
+      }
+    ],
+    "1. Set up repository scaffolding and environment configuration files": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715421876
+      }
+    ],
+    "2. Implement backend configuration and response envelope helpers": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715867636
+      }
+    ],
+    "8. Bootstrap frontend application tooling and providers": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715989841
+      }
+    ],
+    "12. Implement placeholder pages": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789715990795
+      }
+    ],
+    "5. Implement the Health_Endpoint and API router aggregation": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716283973
+      }
+    ],
+    "4. Implement MongoDB Database_Connector": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716285842
+      }
+    ],
+    "3. Implement CORS configuration": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716287831
+      }
+    ],
+    "13. Implement Layout and Navbar": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716625156
+      }
+    ],
+    "9. Implement the health check service layer": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789716804364
+      }
+    ],
+    "6. Implement the backend app factory, lifespan, and error handling": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717180827
+      }
+    ],
+    "10. Implement the BackendStatusCard component": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717464255
+      }
+    ],
+    "11. Implement the HomePage": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717629031
+      }
+    ],
+    "14. Wire routing": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717731676
+      }
+    ],
+    "16. Write project documentation": [
+      {
+        "executionId": "63d98521-774b-4029-b125-51abcff0ed12",
+        "chatSessionId": "sess_6d3a02a4-f036-4729-8911-131fafb1bc80",
+        "timestamp": 1789717892181
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+# Backend Application dependencies (Sprint 0)
+# All versions are pinned to exact releases for reproducible installs.
+# See .kiro/specs/sprint-0-foundation-setup/requirements.md, Requirement 10.
+
+fastapi==0.115.6
+uvicorn==0.34.0
+motor==3.6.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+python-dotenv==1.0.1
+passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
+python-jose==3.3.0
+
+# Test dependencies
+hypothesis==6.122.3
+pytest==8.3.4
+httpx==0.28.1
