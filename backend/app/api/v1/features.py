@@ -37,7 +37,8 @@ from app.models.feature import (
     PaginatedFeatureResponse,
     PaginationMeta,
 )
-from app.services import feature_service
+from app.models.comment import CommentCreate, CommentResponse, build_comment_tree
+from app.services import comment_service, feature_service
 from app.utils.responses import success_response
 
 router = APIRouter(prefix="/features")
@@ -123,3 +124,28 @@ async def delete_feature_route(
 ) -> dict:
     await feature_service.delete_feature(feature_id, current_user)
     return success_response("Feature request deleted.")
+
+
+@router.post("/{feature_id}/comments", status_code=201)
+async def create_comment_route(
+    feature_id: str,
+    body: CommentCreate,
+    current_user: dict = Depends(require_verified_user),
+) -> dict:
+    feature = await feature_service.find_by_id(feature_id)
+    if feature is None:
+        raise FeatureNotFoundException("Feature request not found.")
+    doc = await comment_service.create_comment(body, feature_id, current_user)
+    return success_response("Comment posted.", CommentResponse.from_mongo(doc).model_dump())
+
+
+@router.get("/{feature_id}/comments")
+async def get_comments_route(
+    feature_id: str,
+) -> dict:
+    feature = await feature_service.find_by_id(feature_id)
+    if feature is None:
+        raise FeatureNotFoundException("Feature request not found.")
+    docs = await comment_service.get_comments_for_feature(feature_id)
+    tree = build_comment_tree(docs)
+    return success_response("Comments retrieved.", [t.model_dump() for t in tree])

@@ -19,7 +19,7 @@ from app.api.v1 import api_router
 from app.core.cors import configure_cors
 from app.core.exceptions import AuthException, FeatureException
 from app.db.mongodb import close_mongo_connection, connect_to_mongo
-from app.services import feature_service
+from app.services import comment_service, feature_service
 from app.utils.responses import error_response
 
 
@@ -28,6 +28,7 @@ async def lifespan(app: FastAPI):
     """Connect to MongoDB on startup and close the connection on shutdown."""
     await connect_to_mongo()
     await feature_service.ensure_indexes()
+    await comment_service.ensure_indexes()
     yield
     await close_mongo_connection()
 

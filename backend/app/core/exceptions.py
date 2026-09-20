@@ -139,3 +139,41 @@ class VoteFailedException(FeatureException):
     (Req 2.x). Maps to HTTP 500 (Req 7.3)."""
 
     status_code = 500
+
+
+# --- Comment-domain exceptions (Sprint 4) --------------------------------
+#
+# Four additional members of the FeatureException family, appended for the
+# threaded discussion engine. They intentionally subclass FeatureException
+# (NOT AuthException) so main.py's single existing
+# @app.exception_handler(FeatureException) already translates them to the
+# standard {success, message, errors} error envelope with no new
+# per-exception handler registered (Req 9.1–9.5).
+
+
+class CommentNotFoundException(FeatureException):
+    """Raised when Comment_Service cannot locate a comment by id. Maps to
+    HTTP 404 (Req 9.1)."""
+
+    status_code = 404
+
+
+class CommentPermissionDeniedException(FeatureException):
+    """Raised when the requesting user is not authorized to edit or delete a
+    specific comment. Maps to HTTP 403 (Req 9.2)."""
+
+    status_code = 403
+
+
+class CommentDeletedException(FeatureException):
+    """Raised when an edit is attempted on a soft-deleted comment. Maps to
+    HTTP 410 (Req 9.3)."""
+
+    status_code = 410
+
+
+class ReplyDepthExceededException(FeatureException):
+    """Raised when a reply would exceed the maximum allowed nesting depth.
+    Maps to HTTP 422 (Req 9.4)."""
+
+    status_code = 422
