@@ -1,0 +1,219 @@
+/*
+ * Markdown_Styles (Requirement 7).
+ *
+ * The single, centralized stylesheet providing GitHub-like styling for
+ * every element Requirement 3.1 allows MarkdownRenderer to produce:
+ * h1-h6, ul/ol/li, a, table/thead/tbody/tr/th/td, pre/code, blockquote,
+ * strong/em, p, br, hr.
+ *
+ * Every rule below is scoped entirely under `.markdown-body` (the root
+ * class MarkdownRenderer applies to its output container) so that this
+ * is the sole source of markdown-specific styling in the Frontend
+ * Application (Req 7.3) - no bare element selectors, and no other file
+ * declares a rule targeting these tag names within markdown content.
+ * Imported exactly once, by MarkdownRenderer.jsx (Req 7.4).
+ */
+
+.markdown-body {
+  color: inherit;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+/* Headings: progressively decreasing size/weight from h1 to h6 (Req 7.1) */
+.markdown-body h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.25;
+}
+
+.markdown-body h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 1.25rem;
+  margin-bottom: 0.625rem;
+  line-height: 1.3;
+}
+
+.markdown-body h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.35;
+}
+
+.markdown-body h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-body h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-body h6 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  color: #64748b;
+}
+
+.markdown-body h1:first-child,
+.markdown-body h2:first-child,
+.markdown-body h3:first-child,
+.markdown-body h4:first-child,
+.markdown-body h5:first-child,
+.markdown-body h6:first-child {
+  margin-top: 0;
+}
+
+/* Paragraphs and line breaks */
+.markdown-body p {
+  margin: 0.5rem 0;
+}
+
+.markdown-body p:first-child {
+  margin-top: 0;
+}
+
+.markdown-body p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body br {
+  line-height: 1.6;
+}
+
+/* Lists: spaced items with visible bullets/numbers */
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+.markdown-body ul ul,
+.markdown-body ol ol,
+.markdown-body ul ol,
+.markdown-body ol ul {
+  margin: 0.25rem 0;
+}
+
+.markdown-body li {
+  margin: 0.25rem 0;
+}
+
+/* Links */
+.markdown-body a {
+  color: #4f46e5;
+  text-decoration: none;
+}
+
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+
+.markdown-body a:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
+}
+
+/* Tables: cell borders and header shading */
+.markdown-body table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  display: block;
+}
+
+.markdown-body table thead,
+.markdown-body table tbody,
+.markdown-body table tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.markdown-body th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+
+/* Code blocks and inline code */
+.markdown-body pre,
+.markdown-body code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  background: #f1f5f9;
+  font-size: 0.875em;
+}
+
+.markdown-body pre {
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+
+.markdown-body pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+.markdown-body code {
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+/* Blockquotes */
+.markdown-body blockquote {
+  border-left: 3px solid #cbd5e1;
+  color: #64748b;
+  padding-left: 1rem;
+  margin: 0.75rem 0;
+}
+
+.markdown-body blockquote p {
+  margin: 0.25rem 0;
+}
+
+/* Emphasis */
+.markdown-body strong {
+  font-weight: 700;
+}
+
+.markdown-body em {
+  font-style: italic;
+}
+
+/* Horizontal rule */
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 1rem 0;
+}

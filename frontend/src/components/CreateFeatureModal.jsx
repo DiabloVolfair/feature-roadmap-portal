@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useCreateFeature } from "../hooks/useFeatures";
+import MarkdownEditor from "./MarkdownEditor";
+import CharacterCounter from "./CharacterCounter";
+
+const DESCRIPTION_MAX_LENGTH = 10_000;
 
 const CATEGORY_OPTIONS = [
   { value: "ui_ux", label: "UI/UX" },
@@ -32,9 +36,9 @@ export function validateFeatureForm({ title, description_markdown, category }) {
 
 /**
  * CreateFeatureModal renders a form for submitting a new feature request:
- * `title`, `description_markdown` (plain-text textarea, no live preview or
- * rendering - full markdown rendering is Sprint 2B's job), and a `category`
- * select populated with the four Feature_Category values (Req 17.1).
+ * `title`, `description_markdown` (rendered via MarkdownEditor with a live
+ * preview and a character counter, per Sprint 2B), and a `category` select
+ * populated with the four Feature_Category values (Req 17.1).
  *
  * Fields are validated via `validateFeatureForm` before calling
  * `useCreateFeature()`'s mutation (Req 17.3, 17.4). On success, shows a
@@ -43,7 +47,8 @@ export function validateFeatureForm({ title, description_markdown, category }) {
  * refresh the feed (Req 17.5). On failure, shows an error Toast and stays
  * open with the entered values intact (Req 17.6).
  *
- * Requirements: 17.1, 17.2, 17.3, 17.4, 17.5, 17.6, 24.5, 25.4
+ * Requirements: 8.1, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 17.1, 17.2, 17.3,
+ * 17.4, 17.5, 17.6, 24.5, 25.4
  */
 function CreateFeatureModal({ isOpen, onClose }) {
   const [title, setTitle] = useState(EMPTY_FORM.title);
@@ -111,16 +116,13 @@ function CreateFeatureModal({ isOpen, onClose }) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="feature-description" className="text-sm font-medium text-slate-700">
+            <span id="feature-description-label" className="text-sm font-medium text-slate-700">
               Description
-            </label>
-            <textarea
-              id="feature-description"
-              rows={5}
-              value={descriptionMarkdown}
-              onChange={(event) => setDescriptionMarkdown(event.target.value)}
-              className="rounded-md border border-slate-300 px-3 py-2"
-            />
+            </span>
+            <div aria-labelledby="feature-description-label">
+              <MarkdownEditor value={descriptionMarkdown} onChange={setDescriptionMarkdown} />
+            </div>
+            <CharacterCounter length={descriptionMarkdown.length} max={DESCRIPTION_MAX_LENGTH} />
             {fieldErrors.description_markdown && (
               <p className="text-sm text-red-600">{fieldErrors.description_markdown}</p>
             )}

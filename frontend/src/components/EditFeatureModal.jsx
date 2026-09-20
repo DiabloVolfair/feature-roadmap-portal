@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { validateFeatureForm } from "./CreateFeatureModal";
 import { useUpdateFeature } from "../hooks/useFeatures";
+import MarkdownEditor from "./MarkdownEditor";
+import CharacterCounter from "./CharacterCounter";
 
 const CATEGORY_OPTIONS = [
   { value: "ui_ux", label: "UI/UX" },
@@ -10,14 +12,16 @@ const CATEGORY_OPTIONS = [
   { value: "general", label: "General" },
 ];
 
+const DESCRIPTION_MAX_LENGTH = 10_000;
+
 /**
  * EditFeatureModal renders a form for editing an existing feature request's
- * `title`, `description_markdown` (plain-text textarea, no live preview or
- * rendering), and `category`. It is a near-twin of CreateFeatureModal, minus
- * server-assigned/access-controlled fields, plus prefill behavior - there is
- * no `status` field/control anywhere, because `FeatureUpdate` structurally
- * omits `status` and status changes are out of scope for non-admins this
- * sprint (Req 18.1).
+ * `title`, `description_markdown` (edited via MarkdownEditor, with a live
+ * character counter beneath it, per Req 8.2-8.5), and `category`. It is a
+ * near-twin of CreateFeatureModal, minus server-assigned/access-controlled
+ * fields, plus prefill behavior - there is no `status` field/control
+ * anywhere, because `FeatureUpdate` structurally omits `status` and status
+ * changes are out of scope for non-admins this sprint (Req 18.1).
  *
  * The Edit trigger's author-gated visibility is FeatureCard's
  * responsibility (Req 19.2's sibling rule for Edit, enforced there via
@@ -36,7 +40,7 @@ const CATEGORY_OPTIONS = [
  * refetch) to refresh the feed/details data (Req 18.5). On failure, shows
  * an error Toast and stays open with the entered values intact (Req 18.6).
  *
- * Requirements: 18.1, 18.2, 18.3, 18.4, 18.5, 18.6, 24.5, 25.4
+ * Requirements: 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 18.1, 18.2, 18.3, 18.4, 18.5, 18.6, 24.5, 25.4
  */
 function EditFeatureModal({ isOpen, onClose, feature }) {
   const [title, setTitle] = useState("");
@@ -111,13 +115,8 @@ function EditFeatureModal({ isOpen, onClose, feature }) {
             <label htmlFor="edit-feature-description" className="text-sm font-medium text-slate-700">
               Description
             </label>
-            <textarea
-              id="edit-feature-description"
-              rows={5}
-              value={descriptionMarkdown}
-              onChange={(event) => setDescriptionMarkdown(event.target.value)}
-              className="rounded-md border border-slate-300 px-3 py-2"
-            />
+            <MarkdownEditor value={descriptionMarkdown} onChange={setDescriptionMarkdown} />
+            <CharacterCounter length={descriptionMarkdown.length} max={DESCRIPTION_MAX_LENGTH} />
             {fieldErrors.description_markdown && (
               <p className="text-sm text-red-600">{fieldErrors.description_markdown}</p>
             )}
