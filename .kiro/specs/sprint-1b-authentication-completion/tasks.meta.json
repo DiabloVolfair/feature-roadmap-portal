@@ -1,0 +1,21 @@
+{
+  "pbtResults": {
+    "2.2 Write property test for opaque token hashing round-trip": {
+      "status": "passed",
+      "lastRunTimestamp": 1789734464991
+    },
+    "4.4 Write property test for password reset bound validation": {
+      "status": "passed",
+      "lastRunTimestamp": 1789734475065
+    },
+    "7.3 Write property test for forgot-password response-wording indistinguishability": {
+      "status": "passed",
+      "lastRunTimestamp": 1789738575335
+    },
+    "4.5 Write property test for password reset side effects": {
+      "status": "passed",
+      "lastRunTimestamp": 1789738630620
+    }
+  },
+  "executionHistory": {}
+}

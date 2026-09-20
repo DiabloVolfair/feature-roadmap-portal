@@ -68,3 +68,48 @@ class UnauthorizedException(AuthException):
         super().__init__(message)
         if status_code is not None:
             self.status_code = status_code
+
+
+# --- Feature-domain exceptions (Sprint 2A) -------------------------------
+#
+# A new, small exception family, deliberately not inheriting from
+# AuthException: AuthException is authentication-specific, and reusing it
+# (or renaming it) for feature-domain failures would be a needless naming
+# compromise (Req 11.3). This mirrors AuthException's shape and its
+# single-handler-per-family wiring pattern, registered separately in
+# main.py.
+#
+# No InvalidCategoryException/InvalidStatusException types are introduced
+# here: category/status/sort validation is fully enforced via
+# Pydantic/FastAPI Enum-typed request/query parameters, which already
+# produce a 422 response through the existing RequestValidationError
+# handler, so dedicated exceptions for that failure mode would be dead code
+# (Req 11.6).
+
+
+class FeatureException(Exception):
+    """Base class for every reusable feature-domain exception. Same shape as
+    AuthException (status_code/message/errors), but intentionally not a
+    subclass of it - AuthException is authentication-specific and this is a
+    different domain (Req 11.3)."""
+
+    status_code: int
+
+    def __init__(self, message: str, errors: list[str] | None = None) -> None:
+        self.message = message
+        self.errors = errors or [message]
+        super().__init__(message)
+
+
+class FeatureNotFoundException(FeatureException):
+    """Raised when Feature_Service cannot locate a feature by id. Maps to
+    HTTP 404 (Req 11.1)."""
+
+    status_code = 404
+
+
+class PermissionDeniedException(FeatureException):
+    """Raised when the requesting user is not authorized to modify or
+    delete a specific feature request. Maps to HTTP 403 (Req 11.2)."""
+
+    status_code = 403

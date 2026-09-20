@@ -17,8 +17,16 @@ dependency-resolution exception path unchanged, without being re-wrapped
 when the resolved user's `role` is not `"admin"` (Req 16.3, 18.7), and
 otherwise provides the resolved user to the route handler (Req 16.4).
 
+Sprint 1B additively extends this module with `require_verified_user` (Req 9)
+and `require_admin` (Req 10), two stricter dependencies that also depend on
+`get_current_user` via `Depends` for the same unwrapped-propagation reason.
+`require_admin` is a new dependency alongside `get_current_admin`, not a
+replacement for it: `get_current_admin` remains unchanged and continues to
+check `role == "admin"` only, while `require_admin` additionally requires
+`is_verified` to be `true` (Req 10.5).
+
 Requirements: 15.1, 15.2, 15.3, 15.4, 15.5, 15.6, 15.7, 16.1, 16.2, 16.3,
-16.4, 18.7
+16.4, 18.7, 9.1, 9.2, 9.3, 9.4, 10.1, 10.2, 10.3, 10.4, 10.5
 """
 
 from typing import Any
@@ -75,5 +83,45 @@ async def get_current_admin(
     user (Req 16.4).
     """
     if user.get("role") != "admin":
+        raise UnauthorizedException("Administrator access required.", status_code=403)
+    return user
+
+
+async def require_verified_user(
+    user: dict[str, Any] = Depends(get_current_user),
+) -> dict[str, Any]:
+    """Resolves the current authenticated user and requires `is_verified == true`.
+
+    Depends on `get_current_user` via FastAPI's `Depends` so that any
+    `AuthException` it raises propagates unchanged (Req 9.1, 9.2). Raises
+    `UnauthorizedException` with `status_code=403` when the resolved user's
+    `is_verified` field is not `true` (Req 9.3); otherwise returns the
+    resolved user (Req 9.4).
+    """
+    if not user.get("is_verified"):
+        raise UnauthorizedException("Email verification required.", status_code=403)
+    return user
+
+
+async def require_admin(
+    user: dict[str, Any] = Depends(get_current_user),
+) -> dict[str, Any]:
+    """Resolves the current authenticated user and requires both
+    `is_verified == true` and `role == "admin"`.
+
+    Depends on `get_current_user` via FastAPI's `Depends` so that any
+    `AuthException` it raises propagates unchanged (Req 10.1, 10.2). Raises
+    `UnauthorizedException` with `status_code=403` when the resolved user's
+    `is_verified` field is not `true` or its `role` field is not `"admin"`
+    (Req 10.3); otherwise returns the resolved user (Req 10.4).
+
+    This dependency is additive alongside `get_current_admin`, which remains
+    unchanged and continues to check `role == "admin"` only, without
+    checking `is_verified` (Req 10.5). `require_admin` is the stricter
+    dependency intended for routes that must guarantee both verification
+    and role, starting with the Admin_Dashboard_Endpoint introduced in
+    Sprint 1B.
+    """
+    if not user.get("is_verified") or user.get("role") != "admin":
         raise UnauthorizedException("Administrator access required.", status_code=403)
     return user

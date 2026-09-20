@@ -9,9 +9,17 @@ exception handling, password/JWT logic, or a direct database query
 `main.py`'s single exception handler translates to the `error_response()`
 envelope (Req 18.9, 27.2).
 
+Sprint 1B additively extends this router with four new routes -
+`send_verification`, `verify_email`, `forgot_password`, `reset_password` -
+delegating to `Email_Verification_Service`/`Password_Reset_Service` in the
+same thin, delegate-everything style; none of the existing signup/login/
+refresh/logout/me handlers above are modified.
+
 Requirements: 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 12.1, 12.2, 12.3, 12.4,
 12.5, 13.1, 13.2, 13.3, 13.4, 14.1, 14.2, 14.3, 17.1, 17.2, 17.3, 17.4,
-19.1, 19.2, 19.3, 19.6, 27.1, 27.2, 27.3, 27.4
+19.1, 19.2, 19.3, 19.6, 27.1, 27.2, 27.3, 27.4, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6,
+4.1, 4.2, 4.3, 4.4, 4.5, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8, 7.1, 7.3,
+7.4, 7.5, 7.6, 7.7, 8.3, 24.1, 24.2
 """
 
 from typing import Any
@@ -20,8 +28,15 @@ from fastapi import APIRouter, Depends, Request, Response
 
 from app.core.config import settings
 from app.middleware.auth import get_current_user
-from app.models.user import UserCreate, UserLogin, UserResponse
-from app.services import auth_service
+from app.models.user import (
+    ForgotPasswordRequest,
+    PasswordResetRequest,
+    UserCreate,
+    UserLogin,
+    UserResponse,
+    VerifyEmailRequest,
+)
+from app.services import auth_service, email_verification_service, password_reset_service, user_service
 from app.utils.responses import success_response
 
 router = APIRouter(prefix="/auth")
@@ -108,3 +123,74 @@ async def me(current_user: dict[str, Any] = Depends(get_current_user)) -> dict[s
     return success_response(
         "Current user retrieved.", UserResponse.from_mongo(current_user).model_dump()
     )
+
+
+@router.post("/send-verification")
+async def send_verification(
+    current_user: dict[str, Any] = Depends(get_current_user),
+) -> dict[str, Any]:
+    """Requests a new Email_Verification_Token for the authenticated user
+    (Req 3.1-3.6).
+
+    Short-circuits with a generic success message if the user is already
+    verified, without creating a new token (Req 3.2, 3.3). Otherwise
+    delegates to `Email_Verification_Service.create_verification_token` and
+    includes the raw token in `data` only when `settings.app_env` is
+    `"development"` (Req 3.4, 3.5).
+    """
+    if current_user.get("is_verified"):
+        return success_response("Account is already verified.")
+    token = await email_verification_service.create_verification_token(str(current_user["_id"]))
+    data = {"token": token} if settings.app_env == "development" else None
+    return success_response("Verification email sent.", data)
+
+
+@router.post("/verify-email")
+async def verify_email(body: VerifyEmailRequest) -> dict[str, Any]:
+    """Consumes an Email_Verification_Token, marking the associated user
+    verified (Req 4.1-4.5).
+
+    Requires no authenticated session - the token itself is the proof of
+    account ownership (Req 4.1). Delegates entirely to
+    `Email_Verification_Service.consume_verification_token`, letting
+    `InvalidTokenException`/`ExpiredTokenException` propagate to `main.py`'s
+    existing exception handler on failure (Req 4.4, 4.5).
+    """
+    await email_verification_service.consume_verification_token(body.token)
+    return success_response("Email verified successfully.")
+
+
+@router.post("/forgot-password")
+async def forgot_password(body: ForgotPasswordRequest) -> dict[str, Any]:
+    """Requests a Password_Reset_Token for the submitted email if it
+    matches an existing user (Req 6.1-6.8).
+
+    Requires no authenticated session (Req 6.1). Never reveals whether the
+    email matched: there is exactly one `success_response(...)` call site
+    below, so the response message is provably identical regardless of
+    account existence (Req 6.4); only the presence of a development-mode
+    token in `data` can differ, and only when `settings.app_env` is
+    `"development"` (Req 6.5, 6.6, 6.7).
+    """
+    user = await user_service.find_by_email(body.email)
+    data = None
+    if user is not None:
+        token = await password_reset_service.create_reset_token(str(user["_id"]))
+        if settings.app_env == "development":
+            data = {"token": token}
+    return success_response("If an account exists, a reset link has been generated.", data)
+
+
+@router.post("/reset-password")
+async def reset_password(body: PasswordResetRequest) -> dict[str, Any]:
+    """Consumes a Password_Reset_Token, replacing the associated user's
+    password and invalidating their active session (Req 7.1-7.7).
+
+    Requires no authenticated session - the token itself is the proof of
+    account ownership (Req 7.1). Delegates entirely to
+    `Password_Reset_Service.consume_reset_token`, letting
+    `InvalidTokenException`/`ExpiredTokenException` propagate to `main.py`'s
+    existing exception handler on failure (Req 7.4, 7.5, 7.6, 7.7).
+    """
+    await password_reset_service.consume_reset_token(body.token, body.new_password)
+    return success_response("Password reset successfully.")

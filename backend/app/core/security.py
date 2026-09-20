@@ -79,36 +79,43 @@ def verify_password(password: str, password_hash: str) -> bool:
         return False
 
 
-def _refresh_token_digest(token: str) -> str:
-    """Reduces a Refresh_Token (a JWT string, far longer than 72 bytes) to a
-    fixed-length 64-character hex SHA-256 digest, so it can safely be passed
-    to bcrypt (which caps input at 72 bytes) without truncation.
+def _opaque_token_digest(token: str) -> str:
+    """Reduces any opaque token string (a Refresh_Token, Email_Verification_Token,
+    or Password_Reset_Token - far longer than 72 bytes) to a fixed-length
+    64-character hex SHA-256 digest, so it can safely be passed to bcrypt
+    (which caps input at 72 bytes) without truncation.
     """
     return hashlib.sha256(token.encode("utf-8")).hexdigest()
 
 
-def hash_refresh_token(token: str) -> str:
-    """Hashes a Refresh_Token for storage.
+def hash_opaque_token(token: str) -> str:
+    """Hashes any opaque token (Refresh_Token, Email_Verification_Token,
+    Password_Reset_Token) for storage.
 
-    Refresh tokens are JWT strings far longer than bcrypt's 72-byte input
-    limit, so unlike `hash_password`, this first reduces the token to a
+    Opaque tokens are strings far longer than bcrypt's 72-byte input limit,
+    so unlike `hash_password`, this first reduces the token to a
     fixed-length SHA-256 digest and bcrypt-hashes that digest instead of the
     raw token.
     """
-    return _pwd_context.hash(_refresh_token_digest(token))
+    return _pwd_context.hash(_opaque_token_digest(token))
 
 
-def verify_refresh_token(token: str, token_hash: str) -> bool:
-    """Verifies a Refresh_Token against a stored hash produced by
-    `hash_refresh_token`.
+def verify_opaque_token(token: str, token_hash: str) -> bool:
+    """Verifies an opaque token against a stored hash produced by
+    `hash_opaque_token`.
 
     Returns False (never raises) for a malformed/non-bcrypt stored hash,
     mirroring `verify_password`'s behavior.
     """
     try:
-        return _pwd_context.verify(_refresh_token_digest(token), token_hash)
+        return _pwd_context.verify(_opaque_token_digest(token), token_hash)
     except (ValueError, UnknownHashError):
         return False
+
+
+# Sprint 1A names kept as aliases - no caller changes required (Req 24.4).
+hash_refresh_token = hash_opaque_token
+verify_refresh_token = verify_opaque_token
 
 
 def _secret_for(token_type: str) -> str:

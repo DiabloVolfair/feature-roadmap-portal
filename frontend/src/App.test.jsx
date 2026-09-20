@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App";
 import { useHealthCheck } from "./hooks/useHealthCheck";
 
@@ -34,13 +35,36 @@ vi.mock("./services/dashboardService", () => ({
   },
 }));
 
+// HomePage (rendered at /) now calls useFeatureFeed, which wraps
+// featureService.getFeatures in a React Query hook. Mocking featureService
+// (rather than the hook) keeps this file's routing-focused tests exercising
+// the real Feature_Hooks wiring while avoiding a real network call in jsdom.
+vi.mock("./services/featureService", () => ({
+  featureService: {
+    getFeatures: vi.fn(),
+    getFeature: vi.fn(),
+    createFeature: vi.fn(),
+    updateFeature: vi.fn(),
+    deleteFeature: vi.fn(),
+  },
+}));
+
 import { authService } from "./services/authService";
+import { featureService } from "./services/featureService";
 
 // App.jsx renders a BrowserRouter, so routes are exercised by pushing the
 // desired path onto jsdom's history before rendering <App /> for each case.
+// A fresh, retry-disabled QueryClient is provided per render (App.jsx itself
+// has no QueryClientProvider - that's main.jsx's responsibility - so tests
+// supply their own, matching how the real app is composed at the root).
 function renderAppAtPath(path) {
   window.history.pushState({}, "", path);
-  return render(<App />);
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  );
 }
 
 describe("App routing", () => {
@@ -53,6 +77,11 @@ describe("App routing", () => {
     // Default to a logged-out session so the pre-existing tests (which
     // never mocked authService before) keep their original behavior.
     authService.refresh.mockRejectedValue(new Error("no session"));
+    // Default the feed to a pending promise; individual tests that render
+    // HomePage's loaded state aren't needed here since HomePage's own
+    // states are covered by HomePage.test.jsx - this file only asserts
+    // routing.
+    featureService.getFeatures.mockReturnValue(new Promise(() => {}));
   });
 
   afterEach(() => {

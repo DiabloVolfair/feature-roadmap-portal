@@ -37,6 +37,22 @@ REQUIRED_FIELDS = [
 # unset values (Requirement 1.4).
 BLANK_VALIDATED_FIELDS = ["project_name", "api_prefix"]
 
+# Sprint 1B optional fields and the default each takes when its environment
+# variable is unset (Requirements 1.1, 1.2, 1.3).
+OPTIONAL_FIELD_DEFAULTS = {
+    "email_verification_expire_hours": 24,
+    "password_reset_expire_minutes": 30,
+    "app_env": "production",
+}
+
+# (field, env value to set, expected parsed value) for each optional field
+# when explicitly configured (Requirements 1.1, 1.2, 1.3).
+OPTIONAL_FIELD_OVERRIDES = [
+    ("email_verification_expire_hours", "48", 48),
+    ("password_reset_expire_minutes", "60", 60),
+    ("app_env", "development", "development"),
+]
+
 
 def test_settings_constructs_successfully_with_all_required_fields_present():
     """Sanity check: Settings() succeeds when every required field is set."""
@@ -121,3 +137,40 @@ def test_settings_loads_valid_project_name_and_api_prefix(
 
     assert settings.project_name == project_name.strip()
     assert settings.api_prefix == api_prefix.strip()
+
+
+@pytest.mark.parametrize(
+    "optional_field,expected_default", OPTIONAL_FIELD_DEFAULTS.items()
+)
+def test_settings_defaults_optional_field_when_unset(
+    optional_field, expected_default, monkeypatch
+):
+    """When its environment variable is unset, each Sprint 1B optional field
+    (email_verification_expire_hours, password_reset_expire_minutes,
+    app_env) defaults correctly (Requirements 1.1, 1.2, 1.3)."""
+    for field, value in VALID_ENV.items():
+        monkeypatch.setenv(field.upper(), value)
+    for field in OPTIONAL_FIELD_DEFAULTS:
+        monkeypatch.delenv(field.upper(), raising=False)
+
+    settings = Settings(_env_file=None)
+
+    assert getattr(settings, optional_field) == expected_default
+
+
+@pytest.mark.parametrize(
+    "optional_field,env_value,expected_value", OPTIONAL_FIELD_OVERRIDES
+)
+def test_settings_loads_optional_field_when_set(
+    optional_field, env_value, expected_value, monkeypatch
+):
+    """When explicitly set via its environment variable, each Sprint 1B
+    optional field loads the given value correctly (Requirements 1.1, 1.2,
+    1.3)."""
+    for field, value in VALID_ENV.items():
+        monkeypatch.setenv(field.upper(), value)
+    monkeypatch.setenv(optional_field.upper(), env_value)
+
+    settings = Settings(_env_file=None)
+
+    assert getattr(settings, optional_field) == expected_value

@@ -274,3 +274,25 @@ Every sprint must: - Compile without errors. - Preserve architecture. -
 Pass manual testing. - Be ready for Git commit.
 
 This document is the permanent implementation blueprint for the project.
+
+### Authentication Architecture (Final)
+
+Authentication is completed in two stages.
+
+**Sprint 1A**
+
+* Signup/Login
+* JWT Access Token
+* Refresh Token Rotation
+* Password Hashing
+* Auth Context
+* Axios Refresh Interceptor
+
+**Sprint 1B**
+
+* Email Verification Simulation
+* Password Reset
+* Forgot Password
+* RBAC
+* Protected Routes
+* Session Persistence

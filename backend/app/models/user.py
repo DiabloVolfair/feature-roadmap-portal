@@ -108,3 +108,26 @@ class TokenResponse(BaseModel):
 
     access_token: str
     token_type: str = "bearer"
+
+
+class VerifyEmailRequest(BaseModel):
+    """Verify_Email_Endpoint request body (Req 4.1)."""
+
+    token: str
+
+
+class ForgotPasswordRequest(BaseModel):
+    """Forgot_Password_Endpoint request body (Req 6.1)."""
+
+    email: EmailStr
+
+
+class PasswordResetRequest(BaseModel):
+    """Reset_Password_Endpoint request body (Req 7.1).
+
+    Reuses `UserCreate`'s password bounds (8-128 chars) rather than
+    defining new ones (Req 7.2).
+    """
+
+    token: str
+    new_password: str = Field(min_length=8, max_length=128)

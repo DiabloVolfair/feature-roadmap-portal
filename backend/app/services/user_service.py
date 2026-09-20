@@ -131,3 +131,50 @@ async def set_refresh_token(user_id: str, token: str | None) -> bool:
         },
     )
     return result.matched_count == 1
+
+
+async def mark_verified(user_id: str) -> bool:
+    """Sets the `is_verified` field of the user identified by `id` to True.
+    Returns True iff a matching document was found and updated (Req 2.3).
+
+    If no user document matches `user_id`, returns False and does not alter
+    any other user document.
+    """
+    try:
+        object_id = ObjectId(user_id)
+    except (InvalidId, TypeError):
+        return False
+    result = await _collection().update_one(
+        {"_id": object_id},
+        {
+            "$set": {
+                "is_verified": True,
+                "updated_at": datetime.now(timezone.utc),
+            }
+        },
+    )
+    return result.matched_count == 1
+
+
+async def set_password_hash(user_id: str, password_hash: str) -> bool:
+    """Sets the `password_hash` field of the user identified by `id` to
+    `password_hash`. Returns True iff a matching document was found and
+    updated (Req 5.3).
+
+    If no user document matches `user_id`, returns False and does not alter
+    any other user document.
+    """
+    try:
+        object_id = ObjectId(user_id)
+    except (InvalidId, TypeError):
+        return False
+    result = await _collection().update_one(
+        {"_id": object_id},
+        {
+            "$set": {
+                "password_hash": password_hash,
+                "updated_at": datetime.now(timezone.utc),
+            }
+        },
+    )
+    return result.matched_count == 1

@@ -17,8 +17,9 @@ from starlette.responses import JSONResponse
 
 from app.api.v1 import api_router
 from app.core.cors import configure_cors
-from app.core.exceptions import AuthException
+from app.core.exceptions import AuthException, FeatureException
 from app.db.mongodb import close_mongo_connection, connect_to_mongo
+from app.services import feature_service
 from app.utils.responses import error_response
 
 
@@ -26,6 +27,7 @@ from app.utils.responses import error_response
 async def lifespan(app: FastAPI):
     """Connect to MongoDB on startup and close the connection on shutdown."""
     await connect_to_mongo()
+    await feature_service.ensure_indexes()
     yield
     await close_mongo_connection()
 
@@ -62,6 +64,18 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
 @app.exception_handler(AuthException)
 async def auth_exception_handler(request: Request, exc: AuthException) -> JSONResponse:
     """Translate any AuthException subclass into the error envelope (Req 18.8)."""
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=error_response(
+            message=exc.message,
+            errors=exc.errors,
+        ),
+    )
+
+
+@app.exception_handler(FeatureException)
+async def feature_exception_handler(request: Request, exc: FeatureException) -> JSONResponse:
+    """Translate any FeatureException subclass into the error envelope."""
     return JSONResponse(
         status_code=exc.status_code,
         content=error_response(

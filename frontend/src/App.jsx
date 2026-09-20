@@ -12,6 +12,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+import FeatureDetailsPage from "./pages/FeatureDetailsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 /**
@@ -50,6 +51,10 @@ function App() {
                   <AdminDashboardPage />
                 </AdminRoute>
               }
+            />
+            <Route
+              path="features/:featureId"
+              element={<FeatureDetailsPage />}
             />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
