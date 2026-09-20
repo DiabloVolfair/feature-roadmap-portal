@@ -113,3 +113,29 @@ class PermissionDeniedException(FeatureException):
     delete a specific feature request. Maps to HTTP 403 (Req 11.2)."""
 
     status_code = 403
+
+
+# --- Vote-domain exceptions (Sprint 3) -----------------------------------
+#
+# Two additional members of the FeatureException family, appended for the
+# voting engine. They intentionally subclass FeatureException (NOT
+# AuthException) so main.py's single existing @app.exception_handler(
+# FeatureException) already translates them to the standard
+# {success, message, errors} error envelope with no new per-exception
+# handler registered (Req 7.1, 7.4).
+
+
+class AlreadyVotedException(FeatureException):
+    """Defensive: raised when a conditional vote update matches no document
+    because the feature's vote state changed between the pre-read and the
+    atomic write (the lost-race case, Req 2.7). Maps to HTTP 409 (Req 7.2)."""
+
+    status_code = 409
+
+
+class VoteFailedException(FeatureException):
+    """Raised when a voting operation cannot be completed for a reason other
+    than a not-found feature or an already-resolved concurrent toggle
+    (Req 2.x). Maps to HTTP 500 (Req 7.3)."""
+
+    status_code = 500

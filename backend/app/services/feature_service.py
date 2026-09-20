@@ -2,8 +2,8 @@
 `features` collection.
 
 Provides `ensure_indexes`, `create_feature`, `find_by_id`, `update_feature`,
-`delete_feature`, and `get_feed`, plus the private `_build_query`/`_build_sort`
-helpers used only by `get_feed`.
+`delete_feature`, `get_feed`, and `get_related_features`, plus the private
+`_build_query`/`_build_sort` helpers used only by `get_feed`.
 
 `update_feature`/`delete_feature` accept the requesting user's full document
 (not a bare id) so that author-only (Req 5.2, 5.3) and author-or-admin
@@ -11,9 +11,17 @@ helpers used only by `get_feed`.
 leaking into Feature_API routes (Req 27.1). Both mutation functions check
 for a not-found feature before checking authorization (Req 5.7).
 
-Requirements: 3.1, 3.2, 3.4, 3.5, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 5.2, 5.3,
-5.4, 5.5, 5.6, 5.7, 7.1, 7.4, 7.5, 8.1, 8.2, 8.4, 8.5, 8.6, 9.1, 9.2, 9.3, 9.5,
-10.1, 10.2, 10.3, 10.4
+`description_markdown` is passed through `Markdown_Sanitizer.sanitize_markdown`
+at a single shared point, immediately before persistence in `create_feature`
+and `update_feature`. Because sanitization happens at write-time, every
+read path (`find_by_id`, `get_feed`, `get_related_features`) returns the
+already-sanitized value with no separate sanitization step of its own, so
+no code path can return a differently-sanitized copy of the same field
+(Req 3.6).
+
+Requirements: 3.1, 3.2, 3.4, 3.5, 3.6, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 5.2,
+5.3, 5.4, 5.5, 5.6, 5.7, 7.1, 7.4, 7.5, 8.1, 8.2, 8.4, 8.5, 8.6, 9.1, 9.2, 9.3,
+9.5, 10.1, 10.2, 10.3, 10.4
 """
 
 from datetime import datetime, timezone
@@ -21,10 +29,16 @@ from typing import Any
 
 from bson import ObjectId
 from bson.errors import InvalidId
+from pymongo import ReturnDocument
 
-from app.core.exceptions import FeatureNotFoundException, PermissionDeniedException
+from app.core.exceptions import (
+    AlreadyVotedException,
+    FeatureNotFoundException,
+    PermissionDeniedException,
+)
 from app.db.mongodb import db
 from app.models.feature import FeatureCreate, FeatureUpdate
+from app.utils.markdown_sanitizer import sanitize_markdown
 
 
 def _collection():
@@ -55,7 +69,7 @@ async def create_feature(data: FeatureCreate, author_id: str, author_name: str) 
     now = datetime.now(timezone.utc)
     doc = {
         "title": data.title,
-        "description_markdown": data.description_markdown,
+        "description_markdown": sanitize_markdown(data.description_markdown),
         "category": data.category,
         "status": "under_review",
         "author_id": author_id,
@@ -94,6 +108,8 @@ async def update_feature(
     if feature["author_id"] != str(current_user["_id"]):
         raise PermissionDeniedException("Only the author may edit this feature request.")
     updates = data.model_dump(exclude_unset=True)
+    if "description_markdown" in updates:
+        updates["description_markdown"] = sanitize_markdown(updates["description_markdown"])
     updates["updated_at"] = datetime.now(timezone.utc)
     await _collection().update_one({"_id": feature["_id"]}, {"$set": updates})
     return await find_by_id(feature_id)
@@ -154,3 +170,71 @@ def _build_sort(sort: str, search: str | None) -> list[tuple[str, int]]:
         "most_discussed": [("comment_count", -1)],
         "trending": [("vote_count", -1), ("created_at", -1)],
     }[sort]
+
+
+async def get_related_features(
+    feature_id: str, category: str, limit: int = 4
+) -> list[dict[str, Any]]:
+    """Returns up to `limit` (<=4 within this sprint's call sites) feature
+    documents sharing `category`, excluding `feature_id`, ordered by
+    created_at descending with _id descending as a deterministic tiebreaker
+    (Req 2.2-2.6). Returns [] on zero matches, never None. Queries only the
+    existing `category` and `created_at` indexes from Sprint 2A - no new
+    index required (Req 2.9)."""
+    cursor = (
+        _collection()
+        .find({"category": category, "_id": {"$ne": ObjectId(feature_id)}})
+        .sort([("created_at", -1), ("_id", -1)])
+        .limit(limit)
+    )
+    return [doc async for doc in cursor]
+
+
+async def toggle_vote(feature_id: str, user_id: str) -> dict[str, Any]:
+    """Atomically toggles `user_id`'s vote on a feature and returns
+    `{voted, vote_count}` from the post-update document.
+
+    Reads the feature once via `find_by_id` (a genuine miss is a
+    FeatureNotFoundException, not a lost-race AlreadyVotedException - Req 2.6)
+    and uses current membership (`user_id in feature["votes"]`) only to choose
+    the branch. The state change is a single conditional `find_one_and_update`
+    whose filter carries the membership guard, so the array update and the
+    count adjustment are one write and can never diverge (Req 1.2, 1.3, 2.2,
+    2.3): the add branch filters `{_id, votes: {$ne: user_id}}` and applies
+    `{$addToSet: {votes: user_id}, $inc: {vote_count: 1}}`; the remove branch
+    filters `{_id, votes: user_id}` and applies `{$pull: {votes: user_id},
+    $inc: {vote_count: -1}}`. Both request the post-update document via
+    ReturnDocument.AFTER. When the conditional write matches nothing on an
+    existing feature the vote state changed under us, so AlreadyVotedException
+    is raised rather than retrying or corrupting the count (Req 2.7).
+
+    Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7
+    """
+    feature = await find_by_id(feature_id)
+    if feature is None:
+        raise FeatureNotFoundException("Feature request not found.")
+
+    object_id = feature["_id"]
+    already_voted = user_id in feature.get("votes", [])
+
+    if already_voted:
+        updated = await _collection().find_one_and_update(
+            {"_id": object_id, "votes": user_id},
+            {"$pull": {"votes": user_id}, "$inc": {"vote_count": -1}},
+            return_document=ReturnDocument.AFTER,
+        )
+        resulting_voted = False
+    else:
+        updated = await _collection().find_one_and_update(
+            {"_id": object_id, "votes": {"$ne": user_id}},
+            {"$addToSet": {"votes": user_id}, "$inc": {"vote_count": 1}},
+            return_document=ReturnDocument.AFTER,
+        )
+        resulting_voted = True
+
+    if updated is None:
+        raise AlreadyVotedException(
+            "Your vote could not be applied because the vote state changed. Please retry."
+        )
+
+    return {"voted": resulting_voted, "vote_count": updated["vote_count"]}

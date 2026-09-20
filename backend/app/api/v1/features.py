@@ -20,10 +20,15 @@ from math import ceil
 from fastapi import APIRouter, Depends, Query
 
 from app.core.exceptions import FeatureNotFoundException
-from app.middleware.auth import get_current_user
+from app.middleware.auth import (
+    get_current_user,
+    get_optional_current_user,
+    require_verified_user,
+)
 from app.models.feature import (
     FeatureCategory,
     FeatureCreate,
+    FeatureDetailResponse,
     FeatureFeedResponse,
     FeatureResponse,
     FeatureSort,
@@ -54,6 +59,7 @@ async def feed_route(
     status: list[FeatureStatus] = Query([]),
     sort: FeatureSort = Query("newest"),
     search: str | None = Query(None),
+    current_user: dict | None = Depends(get_optional_current_user),
 ) -> dict:
     items, total = await feature_service.get_feed(page, limit, category, status, sort, search)
     total_pages = ceil(total / limit) if total else 0
@@ -62,17 +68,45 @@ async def feed_route(
         has_next=page < total_pages, has_previous=page > 1,
     )
     body = PaginatedFeatureResponse(
-        items=[FeatureFeedResponse.from_mongo(doc) for doc in items], pagination=pagination
+        items=[FeatureFeedResponse.from_mongo(doc, current_user=current_user) for doc in items],
+        pagination=pagination,
     )
     return success_response("Feed retrieved.", body.model_dump())
 
 
 @router.get("/{feature_id}")
-async def get_feature_route(feature_id: str) -> dict:
+async def get_feature_route(
+    feature_id: str,
+    current_user: dict | None = Depends(get_optional_current_user),
+) -> dict:
     feature = await feature_service.find_by_id(feature_id)
     if feature is None:
         raise FeatureNotFoundException("Feature request not found.")
-    return success_response("Feature retrieved.", FeatureResponse.from_mongo(feature).model_dump())
+    related = await feature_service.get_related_features(feature_id, feature["category"])
+    body = FeatureDetailResponse.from_mongo(feature, current_user=current_user, related=related)
+    return success_response("Feature retrieved.", body.model_dump())
+
+
+@router.post("/{feature_id}/vote")
+async def vote_route(
+    feature_id: str, current_user: dict = Depends(require_verified_user)
+) -> dict:
+    result = await feature_service.toggle_vote(feature_id, str(current_user["_id"]))
+    return success_response("Vote updated.", result)
+
+
+@router.get("/{feature_id}/vote-status")
+async def vote_status_route(
+    feature_id: str, current_user: dict = Depends(require_verified_user)
+) -> dict:
+    feature = await feature_service.find_by_id(feature_id)
+    if feature is None:
+        raise FeatureNotFoundException("Feature request not found.")
+    has_voted = str(current_user["_id"]) in feature.get("votes", [])
+    return success_response(
+        "Vote status retrieved.",
+        {"has_voted": has_voted, "vote_count": feature["vote_count"]},
+    )
 
 
 @router.patch("/{feature_id}")

@@ -58,6 +58,23 @@ FeatureSort = Literal[
 six values (Req 8.1)."""
 
 
+def viewer_has_voted(
+    doc: dict[str, Any], current_user: dict[str, Any] | None
+) -> bool:
+    """True iff a resolved current user's id is present in the feature's
+    `votes` array; `False` for a guest (Req 5.2, 5.3, 6.2, 6.3).
+
+    Single-sourced membership test shared by both read schemas'
+    serialization, mirroring how `is_owner`/`is_admin` are derived per
+    viewer rather than stored. Reads `votes` via `doc.get("votes", [])`
+    so a document missing the array is treated as no votes.
+    """
+    return (
+        current_user is not None
+        and str(current_user["_id"]) in doc.get("votes", [])
+    )
+
+
 class FeatureCreate(BaseModel):
     """Create_Feature_Endpoint request body (Req 2.1).
 
@@ -143,7 +160,113 @@ class FeatureFeedResponse(FeatureResponse):
     computed client-side from the full `description_markdown` already
     present here (Req 24.3), avoiding two different truncation behaviors
     for the same visual result.
+
+    Additionally carries a per-viewer `has_voted` flag (Req 5.1),
+    defaulting to `False` so a serialization path that omits
+    `current_user` produces the guest value. The raw `votes` array is
+    still never exposed - `has_voted` is derived from it (Req 1.4).
     """
+
+    has_voted: bool = False
+
+    @classmethod
+    def from_mongo(
+        cls,
+        doc: dict[str, Any],
+        *,
+        current_user: dict[str, Any] | None = None,
+    ) -> "FeatureFeedResponse":
+        """Build a `FeatureFeedResponse` from a persisted Mongo feature
+        document and the (possibly absent) resolved current user.
+
+        Reuses `FeatureResponse.from_mongo` for the ten base fields and
+        populates the per-viewer `has_voted` via `viewer_has_voted`, so a
+        guest (or an omitted `current_user`) yields `has_voted=False`
+        (Req 5.2, 5.3).
+        """
+        base = FeatureResponse.from_mongo(doc).model_dump()
+        return cls(**base, has_voted=viewer_has_voted(doc, current_user))
+
+
+class RelatedFeatureCard(BaseModel):
+    """Lightweight related-feature card schema (Req 2.8).
+
+    Deliberately narrower than `FeatureResponse` - no
+    `description_markdown`, `author_id`, `author_name`, or `comment_count`
+    - because the RelatedFeatures component never displays those fields.
+    """
+
+    id: str
+    title: str
+    status: FeatureStatus
+    category: FeatureCategory
+    vote_count: int
+    created_at: datetime
+
+    @classmethod
+    def from_mongo(cls, doc: dict[str, Any]) -> "RelatedFeatureCard":
+        """Build a `RelatedFeatureCard` from a persisted Mongo feature document."""
+        return cls(
+            id=str(doc["_id"]),
+            title=doc["title"],
+            status=doc["status"],
+            category=doc["category"],
+            vote_count=doc["vote_count"],
+            created_at=doc["created_at"],
+        )
+
+
+class FeatureDetailResponse(FeatureResponse):
+    """Get_Feature_Endpoint response schema (Req 1.1).
+
+    Every `FeatureResponse` field, plus `is_owner`, `is_admin`,
+    `related_features`, and a per-viewer `has_voted` (Req 6.1).
+    Subclasses `FeatureResponse` rather than redeclaring its ten fields,
+    so the two schemas cannot silently drift apart as the base shape
+    evolves. `has_voted` defaults to `False` (the guest value) and the
+    raw `votes` array is never exposed (Req 1.4).
+    """
+
+    is_owner: bool
+    is_admin: bool
+    related_features: list[RelatedFeatureCard]
+    has_voted: bool = False
+
+    @classmethod
+    def from_mongo(
+        cls,
+        doc: dict[str, Any],
+        *,
+        current_user: dict[str, Any] | None,
+        related: list[dict[str, Any]],
+    ) -> "FeatureDetailResponse":
+        """Build a `FeatureDetailResponse` from a persisted Mongo feature
+        document, the (possibly absent) resolved current user, and the
+        already-fetched list of related feature documents.
+
+        `is_owner` is `True` only when `current_user` is present and its
+        `_id` (stringified) equals the feature's `author_id` (Req 1.2,
+        1.3). `is_admin` is `True` only when `current_user` is present and
+        its `role` equals `"admin"` (Req 1.4, 1.5). Both default to
+        `False` when there is no authenticated user. `has_voted` is
+        derived per viewer via `viewer_has_voted`, so it is `False` for a
+        guest (Req 6.2, 6.3).
+        """
+        base = FeatureResponse.from_mongo(doc).model_dump()
+        is_owner = (
+            current_user is not None
+            and str(current_user["_id"]) == doc["author_id"]
+        )
+        is_admin = current_user is not None and current_user.get("role") == "admin"
+        return cls(
+            **base,
+            is_owner=is_owner,
+            is_admin=is_admin,
+            related_features=[
+                RelatedFeatureCard.from_mongo(item) for item in related
+            ],
+            has_voted=viewer_has_voted(doc, current_user),
+        )
 
 
 class PaginationMeta(BaseModel):

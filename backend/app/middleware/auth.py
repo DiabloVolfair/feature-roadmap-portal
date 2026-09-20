@@ -25,8 +25,17 @@ replacement for it: `get_current_admin` remains unchanged and continues to
 check `role == "admin"` only, while `require_admin` additionally requires
 `is_verified` to be `true` (Req 10.5).
 
+Sprint 2B additively extends this module with `get_optional_current_user`
+(Req 1.6), used by the Get_Feature_Endpoint to resolve an optional
+requester for computing `is_owner`/`is_admin` without imposing an
+authentication requirement where none existed before. It deliberately does
+NOT `Depends` on `get_current_user`, so that every authentication failure
+mode (missing header, non-Bearer scheme, malformed/expired token, wrong
+`type` claim, or an unresolvable `sub`) resolves to `None` instead of
+propagating an exception.
+
 Requirements: 15.1, 15.2, 15.3, 15.4, 15.5, 15.6, 15.7, 16.1, 16.2, 16.3,
-16.4, 18.7, 9.1, 9.2, 9.3, 9.4, 10.1, 10.2, 10.3, 10.4, 10.5
+16.4, 18.7, 9.1, 9.2, 9.3, 9.4, 10.1, 10.2, 10.3, 10.4, 10.5, 1.6
 """
 
 from typing import Any
@@ -69,6 +78,33 @@ async def get_current_user(authorization: str | None = Header(None)) -> dict[str
     if user is None:
         raise InvalidTokenException("Invalid access token.")
     return user
+
+
+async def get_optional_current_user(
+    authorization: str | None = Header(None),
+) -> dict[str, Any] | None:
+    """Resolves the current user if a valid Bearer access token is present;
+    resolves to `None` - never raises - for a missing header, malformed
+    token, expired token, wrong `type` claim, or an unresolvable `sub`.
+    Every one of those failure modes is treated identically to "no
+    authenticated user" (Req 1.6), so routes depending on this stay
+    publicly accessible exactly as they were before this sprint.
+
+    Deliberately does NOT call `get_current_user` via `Depends`: doing so
+    would let `get_current_user`'s exceptions propagate through FastAPI's
+    dependency-resolution path unchanged, which is precisely the behavior
+    this dependency exists to avoid.
+    """
+    scheme, token = get_authorization_scheme_param(authorization or "")
+    if not authorization or scheme.lower() != "bearer" or not token:
+        return None
+    try:
+        payload = decode_token(token, token_type="access")
+    except (TokenExpiredError, TokenDecodeError):
+        return None
+    if payload.get("type") != "access":
+        return None
+    return await user_service.find_by_id(payload["sub"])
 
 
 async def get_current_admin(
