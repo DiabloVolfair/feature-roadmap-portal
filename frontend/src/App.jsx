@@ -13,6 +13,8 @@ import VerifyEmailPage from "./pages/VerifyEmailPage";
 import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import AdminBoardPage from "./pages/AdminBoardPage";
+import AnalyticsDashboard from "./pages/AnalyticsDashboard";
+import AuditLogPage from "./pages/AuditLogPage";
 import FeatureDetailsPage from "./pages/FeatureDetailsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
@@ -58,6 +60,22 @@ function App() {
               element={
                 <AdminRoute>
                   <AdminBoardPage />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="admin/analytics"
+              element={
+                <AdminRoute>
+                  <AnalyticsDashboard />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="admin/audit"
+              element={
+                <AdminRoute>
+                  <AuditLogPage />
                 </AdminRoute>
               }
             />

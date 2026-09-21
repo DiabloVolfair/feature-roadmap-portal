@@ -60,3 +60,63 @@ export function useUpdateFeatureStatus() {
     },
   });
 }
+
+// Task 9.1 — Query hooks
+
+export function useAnalytics() {
+  return useQuery({
+    queryKey: ["analytics"],
+    queryFn: adminBoardService.getAnalytics,
+    staleTime: 60_000,
+  });
+}
+
+export function useAuditLogs(params = {}) {
+  return useQuery({
+    queryKey: ["auditLogs", params],
+    queryFn: () => adminBoardService.getAuditLogs(params),
+  });
+}
+
+// Task 9.2 — Mutation hooks
+
+export function usePinFeature() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ featureId, pinned }) => adminBoardService.pinFeature(featureId, pinned),
+    onSuccess: () => {
+      toast.success("Feature pin updated.");
+      queryClient.invalidateQueries({ queryKey: ["adminBoard"] });
+      queryClient.invalidateQueries({ queryKey: ["features"] });
+    },
+    onError: () => toast.error("Failed to update pin. Please try again."),
+  });
+}
+
+export function useArchiveFeature() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ featureId, archived }) => adminBoardService.archiveFeature(featureId, archived),
+    onSuccess: () => {
+      toast.success("Feature archive status updated.");
+      queryClient.invalidateQueries({ queryKey: ["adminBoard"] });
+      queryClient.invalidateQueries({ queryKey: ["features"] });
+      queryClient.invalidateQueries({ queryKey: ["roadmap"] });
+    },
+    onError: () => toast.error("Failed to update archive status. Please try again."),
+  });
+}
+
+export function useAdminDeleteFeature() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ featureId }) => adminBoardService.adminDeleteFeature(featureId),
+    onSuccess: () => {
+      toast.success("Feature deleted.");
+      queryClient.invalidateQueries({ queryKey: ["adminBoard"] });
+      queryClient.invalidateQueries({ queryKey: ["features"] });
+      queryClient.invalidateQueries({ queryKey: ["roadmap"] });
+    },
+    onError: () => toast.error("Failed to delete feature. Please try again."),
+  });
+}

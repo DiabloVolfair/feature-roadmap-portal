@@ -1,37 +1,98 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
-import AdminDashboardPage from "./AdminDashboardPage";
-import { dashboardService } from "../services/dashboardService";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-vi.mock("../services/dashboardService", () => ({
-  dashboardService: {
-    getAdminDashboard: vi.fn(),
-  },
+import AdminDashboardPage from "./AdminDashboardPage";
+import { useAnalytics } from "../hooks/useAdminBoard";
+
+vi.mock("../hooks/useAdminBoard", () => ({
+  useAnalytics: vi.fn(),
 }));
 
-// Validates: Requirements 16.1, 16.2, 16.3
+vi.mock("../services/adminBoardService");
+
+function createQueryClient() {
+  return new QueryClient({ defaultOptions: { queries: { retry: false } } });
+}
+
+function renderPage() {
+  return render(
+    <QueryClientProvider client={createQueryClient()}>
+      <MemoryRouter>
+        <AdminDashboardPage />
+      </MemoryRouter>
+    </QueryClientProvider>
+  );
+}
+
 describe("AdminDashboardPage", () => {
-  it("renders the resolved message on success", async () => {
-    dashboardService.getAdminDashboard.mockResolvedValue({
-      message: "Welcome Admin.",
-    });
-
-    render(<AdminDashboardPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText("Welcome Admin.")).toBeInTheDocument();
-    });
+  beforeEach(() => {
+    useAnalytics.mockReturnValue({ data: undefined, isLoading: false });
   });
 
-  it("renders a generic error state on any rejection", async () => {
-    dashboardService.getAdminDashboard.mockRejectedValue(new Error("boom"));
+  // Navigation link cards
 
-    render(<AdminDashboardPage />);
+  it("renders a Link with to='/admin/board'", () => {
+    renderPage();
+    expect(screen.getByRole("link", { name: /kanban board/i })).toHaveAttribute(
+      "href",
+      "/admin/board"
+    );
+  });
 
-    await waitFor(() => {
-      expect(
-        screen.getByText("Something went wrong loading the admin dashboard.")
-      ).toBeInTheDocument();
+  it("renders a Link with to='/admin/analytics'", () => {
+    renderPage();
+    expect(screen.getByRole("link", { name: /analytics/i })).toHaveAttribute(
+      "href",
+      "/admin/analytics"
+    );
+  });
+
+  it("renders a Link with to='/admin/audit'", () => {
+    renderPage();
+    expect(screen.getByRole("link", { name: /audit log/i })).toHaveAttribute(
+      "href",
+      "/admin/audit"
+    );
+  });
+
+  // Summary stats with real data
+
+  it("renders summary stats when analytics data is available", () => {
+    useAnalytics.mockReturnValue({
+      data: {
+        features: { total: 42 },
+        users: { total: 7 },
+        engagement: { total_votes: 99 },
+      },
+      isLoading: false,
     });
+
+    renderPage();
+
+    expect(screen.getByText("42")).toBeInTheDocument();
+    expect(screen.getByText("7")).toBeInTheDocument();
+    expect(screen.getByText("99")).toBeInTheDocument();
+    expect(screen.getByText("Total Requests")).toBeInTheDocument();
+    expect(screen.getByText("Total Users")).toBeInTheDocument();
+    expect(screen.getByText("Total Votes")).toBeInTheDocument();
+  });
+
+  // Loading skeleton
+
+  it("renders loading skeletons when useAnalytics returns isLoading: true", () => {
+    useAnalytics.mockReturnValue({ data: undefined, isLoading: true });
+
+    renderPage();
+
+    // The animated skeleton divs are rendered instead of numeric values
+    const skeletons = document.querySelectorAll(".animate-pulse");
+    expect(skeletons.length).toBe(3);
+
+    // Stat labels should still be visible
+    expect(screen.getByText("Total Requests")).toBeInTheDocument();
+    expect(screen.getByText("Total Users")).toBeInTheDocument();
+    expect(screen.getByText("Total Votes")).toBeInTheDocument();
   });
 });

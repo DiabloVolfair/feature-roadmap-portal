@@ -57,9 +57,20 @@ vi.mock("./services/roadmapService", () => ({
   },
 }));
 
+vi.mock("./services/adminBoardService", () => ({
+  getBoard: vi.fn(),
+  updateStatus: vi.fn(),
+  getAnalytics: vi.fn(),
+  getAuditLogs: vi.fn(),
+  pinFeature: vi.fn(),
+  archiveFeature: vi.fn(),
+  adminDeleteFeature: vi.fn(),
+}));
+
 import { authService } from "./services/authService";
 import { featureService } from "./services/featureService";
 import { roadmapService } from "./services/roadmapService";
+import * as adminBoardService from "./services/adminBoardService";
 
 // App.jsx renders a BrowserRouter, so routes are exercised by pushing the
 // desired path onto jsdom's history before rendering <App /> for each case.
@@ -97,6 +108,11 @@ describe("App routing", () => {
       planned: [],
       in_progress: [],
       completed: [],
+    });
+    adminBoardService.getAnalytics.mockResolvedValue({
+      features: { total: 0, under_review: 0, planned: 0, in_progress: 0, completed: 0, archived: 0, pinned: 0 },
+      users: { total: 0, verified: 0 },
+      engagement: { total_votes: 0, total_comments: 0 },
     });
   });
 
