@@ -38,20 +38,20 @@ from app.core.exceptions import (
     CommentNotFoundException,
     CommentPermissionDeniedException,
 )
-from app.db.mongodb import db
+from app.db import mongodb
 from app.models.comment import CommentCreate, CommentUpdate
 from app.utils.markdown_sanitizer import sanitize_markdown
 
 
 def _collection():
     """Returns the `comments` collection off the shared Motor `db` handle."""
-    return db["comments"]
+    return mongodb.db["comments"]
 
 
 def _features_collection():
     """Returns the `features` collection off the shared Motor `db` handle.
     Used for atomic comment_count increments/decrements (Req 3.1, 3.2, 3.3)."""
-    return db["features"]
+    return mongodb.db["features"]
 
 
 async def ensure_indexes() -> None:

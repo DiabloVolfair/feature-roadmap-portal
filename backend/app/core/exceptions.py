@@ -177,3 +177,34 @@ class ReplyDepthExceededException(FeatureException):
     Maps to HTTP 422 (Req 9.4)."""
 
     status_code = 422
+
+
+# --- Admin-domain exceptions (Sprint 5A) ---------------------------------
+#
+# Three additional members of the FeatureException family, appended for the
+# admin Kanban board engine. They intentionally subclass FeatureException
+# (NOT AuthException) so main.py's single existing
+# @app.exception_handler(FeatureException) already translates them to the
+# standard {success, message, errors} error envelope with no new
+# per-exception handler registered (Req 5.1–5.5).
+
+
+class InvalidStatusTransitionException(FeatureException):
+    """Raised when a requested status transition is invalid (e.g. same-to-same).
+    Maps to HTTP 400 (Req 5.1, 5.3)."""
+
+    status_code = 400
+
+
+class AdminPermissionException(FeatureException):
+    """Raised when a non-administrator user attempts an admin-only operation
+    such as updating a feature's status. Maps to HTTP 403 (Req 5.2, 5.4)."""
+
+    status_code = 403
+
+
+class StatusUpdateFailedException(FeatureException):
+    """Raised when an atomic status update finds no document after the write,
+    indicating an unexpected persistence failure. Maps to HTTP 500 (Req 5.5)."""
+
+    status_code = 500

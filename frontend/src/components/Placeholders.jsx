@@ -29,6 +29,9 @@ export function VotingPlaceholder() {
  * Static placeholder card identifying the (not-yet-implemented) threaded
  * discussion/comments section of a feature's details page.
  *
+ * @deprecated Use `DiscussionSection` from `../components/DiscussionSection`
+ * instead. This export is kept for backward compatibility only.
+ *
  * Requirements: 13.2, 13.3, 13.4
  */
 export function CommentsPlaceholder() {

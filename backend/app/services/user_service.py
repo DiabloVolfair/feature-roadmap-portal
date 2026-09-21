@@ -28,7 +28,7 @@ from bson.errors import InvalidId
 from pymongo.errors import DuplicateKeyError
 
 from app.core.security import hash_password, hash_refresh_token
-from app.db.mongodb import db
+from app.db import mongodb
 from app.models.user import UserCreate
 
 
@@ -42,7 +42,7 @@ class DuplicateEmailError(Exception):
 
 def _collection():
     """Returns the `users` collection off the shared Motor `db` handle."""
-    return db["users"]
+    return mongodb.db["users"]
 
 
 async def find_by_email(email: str) -> dict[str, Any] | None:

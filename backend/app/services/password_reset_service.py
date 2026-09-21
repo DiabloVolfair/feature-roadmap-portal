@@ -36,14 +36,14 @@ from typing import Any
 from app.core.config import settings
 from app.core.exceptions import ExpiredTokenException, InvalidTokenException
 from app.core.security import hash_opaque_token, hash_password, verify_opaque_token
-from app.db.mongodb import db
+from app.db import mongodb
 from app.services import user_service
 
 
 def _collection():
     """Returns the `password_reset_tokens` collection off the shared Motor
     `db` handle."""
-    return db["password_reset_tokens"]
+    return mongodb.db["password_reset_tokens"]
 
 
 async def create_reset_token(user_id: str) -> str:

@@ -1,0 +1,53 @@
+/*
+ * Hand-rolled vote-button animation styles (Req 15.1, 15.2, 15.3, 16.1).
+ *
+ * These classes are applied by VoteButton.jsx ONLY when
+ * `prefersReducedMotion()` is false, so motion is opted out of at the JS
+ * level. As a defensive second layer, a `prefers-reduced-motion: reduce`
+ * media query below neutralises every transition/animation even if a class
+ * were somehow applied, guaranteeing no motion for users who ask for none.
+ *
+ * No animation library is used — these are plain CSS transitions and a
+ * single keyframe (Req 15.2).
+ */
+
+/* Base: smooth scale + color transition on the vote control. */
+.vote-btn-animated {
+  transition: transform 150ms ease-out, color 150ms ease-out,
+    background-color 150ms ease-out, border-color 150ms ease-out;
+}
+
+/* Tactile press feedback while the pointer is down. */
+.vote-btn-animated:active {
+  transform: scale(0.92);
+}
+
+/* A brief pop applied to the count when a vote is toggled. */
+.vote-count-animated {
+  display: inline-block;
+  animation: vote-count-pop 220ms ease-out;
+}
+
+@keyframes vote-count-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Defensive suppression: honour the OS-level reduced-motion preference even
+ * if an animation class is present, so there is never residual motion. */
+@media (prefers-reduced-motion: reduce) {
+  .vote-btn-animated,
+  .vote-btn-animated:active,
+  .vote-count-animated {
+    transition: none;
+    animation: none;
+    transform: none;
+  }
+}

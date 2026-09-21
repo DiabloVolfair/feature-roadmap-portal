@@ -1,0 +1,21 @@
+{
+  "pbtResults": {
+    "2.2 Write property test for `BoardFeatureCard` serialization": {
+      "status": "passed",
+      "lastRunTimestamp": 1789924984072
+    },
+    "3.2 Write property tests for transition validation and board totality": {
+      "status": "passed",
+      "lastRunTimestamp": 1789924988453
+    },
+    "7.3 Write property test for optimistic move consistency": {
+      "status": "passed",
+      "lastRunTimestamp": 1789928117269
+    },
+    "7.4 Write property test for board statistics consistency": {
+      "status": "passed",
+      "lastRunTimestamp": 1789928121964
+    }
+  },
+  "executionHistory": {}
+}

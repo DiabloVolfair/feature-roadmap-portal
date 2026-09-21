@@ -32,18 +32,21 @@ from bson.errors import InvalidId
 from pymongo import ReturnDocument
 
 from app.core.exceptions import (
+    AdminPermissionException,
     AlreadyVotedException,
     FeatureNotFoundException,
+    InvalidStatusTransitionException,
     PermissionDeniedException,
+    StatusUpdateFailedException,
 )
-from app.db.mongodb import db
+from app.db import mongodb
 from app.models.feature import FeatureCreate, FeatureUpdate
 from app.utils.markdown_sanitizer import sanitize_markdown
 
 
 def _collection():
     """Returns the `features` collection off the shared Motor `db` handle."""
-    return db["features"]
+    return mongodb.db["features"]
 
 
 async def ensure_indexes() -> None:
@@ -238,3 +241,105 @@ async def toggle_vote(feature_id: str, user_id: str) -> dict[str, Any]:
         )
 
     return {"voted": resulting_voted, "vote_count": updated["vote_count"]}
+
+
+# ---------------------------------------------------------------------------
+# Admin Kanban board — Sprint 5A
+# ---------------------------------------------------------------------------
+
+VALID_STATUSES = frozenset({"under_review", "planned", "in_progress", "completed"})
+ALLOWED_TRANSITIONS: dict[str, frozenset[str]] = {s: VALID_STATUSES - {s} for s in VALID_STATUSES}
+
+
+def validate_status_transition(current_status: str, requested_status: str) -> None:
+    """Pure function. Raises InvalidStatusTransitionException for same-to-same.
+
+    Requirements: 4.2, 4.3
+    """
+    if requested_status == current_status:
+        raise InvalidStatusTransitionException(
+            f"Feature is already '{current_status}'. Specify a different target status."
+        )
+
+
+async def get_board() -> dict[str, list[dict]]:
+    """Returns all features grouped into four status columns, sorted by
+    vote_count descending then created_at descending within each column.
+    Silently skips documents whose status value is not one of the four known
+    statuses. No pagination or filtering is applied.
+
+    Requirements: 6.1, 6.2, 6.3
+    """
+    board: dict[str, list[dict]] = {
+        "under_review": [],
+        "planned": [],
+        "in_progress": [],
+        "completed": [],
+    }
+    cursor = _collection().find({}).sort([("vote_count", -1), ("created_at", -1)])
+    async for doc in cursor:
+        status = doc.get("status")
+        if status in board:
+            board[status].append(doc)
+    return board
+
+
+async def update_feature_status(
+    feature_id: str, new_status: str, current_user: dict[str, Any]
+) -> dict[str, Any]:
+    """Atomically updates a feature's status.
+
+    Guard order:
+    1. Fetch feature by id; raise FeatureNotFoundException if absent.
+    2. Check current_user role; raise AdminPermissionException if not admin.
+    3. Validate the transition; raise InvalidStatusTransitionException on
+       same-to-same.
+    4. Perform atomic find_one_and_update with ReturnDocument.AFTER; raise
+       StatusUpdateFailedException if the returned document is None.
+
+    Returns the updated feature document.
+
+    Requirements: 6.4, 6.5, 6.6, 6.7, 6.8
+    """
+    feature = await find_by_id(feature_id)
+    if feature is None:
+        raise FeatureNotFoundException("Feature request not found.")
+
+    if current_user.get("role") != "admin":
+        raise AdminPermissionException("Only administrators may update a feature's status.")
+
+    validate_status_transition(feature["status"], new_status)
+
+    now = datetime.now(timezone.utc)
+    updated = await _collection().find_one_and_update(
+        {"_id": feature["_id"]},
+        {"$set": {"status": new_status, "updated_at": now}},
+        return_document=ReturnDocument.AFTER,
+    )
+    if updated is None:
+        raise StatusUpdateFailedException(
+            "Status update could not be persisted. Please retry."
+        )
+    return updated
+
+
+# ---------------------------------------------------------------------------
+# Public Roadmap — Sprint 5B
+# ---------------------------------------------------------------------------
+
+
+async def get_public_roadmap() -> dict[str, list[dict]]:
+    """Returns features grouped into the three public roadmap columns.
+    Silently skips 'under_review' and any unknown status values.
+    Sort: vote_count DESC, created_at DESC (Req 3.1–3.6)."""
+    board: dict[str, list[dict]] = {
+        "planned": [],
+        "in_progress": [],
+        "completed": [],
+    }
+    cursor = _collection().find({}).sort([("vote_count", -1), ("created_at", -1)])
+    async for doc in cursor:
+        status = doc.get("status")
+        if status in board:
+            board[status].append(doc)
+    return board

@@ -49,8 +49,17 @@ vi.mock("./services/featureService", () => ({
   },
 }));
 
+// RoadmapPage calls useRoadmap → roadmapService.getRoadmap via React Query.
+// Mock it to resolve immediately so the page reaches its loaded state.
+vi.mock("./services/roadmapService", () => ({
+  roadmapService: {
+    getRoadmap: vi.fn(),
+  },
+}));
+
 import { authService } from "./services/authService";
 import { featureService } from "./services/featureService";
+import { roadmapService } from "./services/roadmapService";
 
 // App.jsx renders a BrowserRouter, so routes are exercised by pushing the
 // desired path onto jsdom's history before rendering <App /> for each case.
@@ -82,6 +91,13 @@ describe("App routing", () => {
     // states are covered by HomePage.test.jsx - this file only asserts
     // routing.
     featureService.getFeatures.mockReturnValue(new Promise(() => {}));
+    // Default the roadmap to immediate resolved data so RoadmapPage reaches
+    // its loaded state and renders the "Public Roadmap" heading.
+    roadmapService.getRoadmap.mockResolvedValue({
+      planned: [],
+      in_progress: [],
+      completed: [],
+    });
   });
 
   afterEach(() => {
@@ -115,12 +131,14 @@ describe("App routing", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders the RoadmapPage at /roadmap", () => {
+  it("renders the RoadmapPage at /roadmap", async () => {
     renderAppAtPath("/roadmap");
 
-    expect(
-      screen.getByRole("heading", { name: /Roadmap/i })
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("heading", { name: /Roadmap/i })
+      ).toBeInTheDocument();
+    });
   });
 
   it("renders the NotFoundPage at an undefined path", () => {

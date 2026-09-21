@@ -169,7 +169,7 @@ function Navbar() {
     <nav className="bg-white border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
-          <span className="text-lg font-semibold text-slate-900">
+          <span className="text-base font-bold text-indigo-600">
             Feature Roadmap Portal
           </span>
 

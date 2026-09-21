@@ -9,13 +9,15 @@ import AuthorCard from "../components/AuthorCard";
 import StatusTimeline from "../components/StatusTimeline";
 import RelatedFeatures from "../components/RelatedFeatures";
 import ShareButton from "../components/ShareButton";
-import { VotingPlaceholder, CommentsPlaceholder } from "../components/Placeholders";
+import { VotingPlaceholder } from "../components/Placeholders";
+import DiscussionSection from "../components/DiscussionSection";
 import FeatureDetailsSkeleton from "../components/skeletons/FeatureDetailsSkeleton";
 import RelatedFeaturesSkeleton from "../components/skeletons/RelatedFeaturesSkeleton";
 import MarkdownContentSkeleton from "../components/skeletons/MarkdownContentSkeleton";
 import FeatureNotFoundState from "../components/FeatureNotFoundState";
 import EditFeatureModal from "../components/EditFeatureModal";
 import ConfirmDialog from "../components/ConfirmDialog";
+import VoteButton from "../components/VoteButton";
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -200,7 +202,14 @@ function FeatureDetailsPage() {
       <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
         <div className="flex flex-1 flex-col gap-6">
           <div className="flex flex-col gap-3">
-            <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">{feature.title}</h1>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">{feature.title}</h1>
+              <VoteButton
+                featureId={feature.id}
+                voteCount={feature.vote_count}
+                hasVoted={feature.has_voted}
+              />
+            </div>
             <div className="flex flex-wrap gap-2">
               <span
                 className={`rounded-full px-2.5 py-1 text-xs font-medium ${statusBadgeClass(feature.status)}`}
@@ -226,10 +235,16 @@ function FeatureDetailsPage() {
 
           <StatusTimeline status={feature.status} />
 
+          {feature.status !== "under_review" && (
+            <Link to="/roadmap" className="text-sm text-indigo-600 hover:underline">
+              View on Roadmap →
+            </Link>
+          )}
+
           <RelatedFeatures relatedFeatures={feature.related_features} />
 
           <VotingPlaceholder />
-          <CommentsPlaceholder />
+          <DiscussionSection featureId={feature.id} commentCount={feature.comment_count} />
         </div>
 
         {/* Desktop action bar: sticky within the secondary column while the

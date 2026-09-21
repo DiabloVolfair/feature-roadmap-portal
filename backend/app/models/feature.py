@@ -285,3 +285,88 @@ class PaginatedFeatureResponse(BaseModel):
 
     items: list[FeatureFeedResponse]
     pagination: PaginationMeta
+
+
+class BoardFeatureCard(BaseModel):
+    """Lightweight kanban board card schema (Requirements: 1.1, 1.2, 1.3, 1.4, 1.5).
+
+    Deliberately omits `description_markdown` and `votes` — the board view
+    never renders those fields.  `id` is the string form of the Mongo `_id`.
+    """
+
+    id: str
+    title: str
+    category: FeatureCategory
+    status: FeatureStatus
+    vote_count: int
+    comment_count: int
+    author_name: str
+    created_at: datetime
+
+    @classmethod
+    def from_mongo(cls, doc: dict[str, Any]) -> "BoardFeatureCard":
+        """Build a `BoardFeatureCard` from a persisted Mongo feature document."""
+        return cls(
+            id=str(doc["_id"]),
+            title=doc["title"],
+            category=doc["category"],
+            status=doc["status"],
+            vote_count=doc["vote_count"],
+            comment_count=doc["comment_count"],
+            author_name=doc["author_name"],
+            created_at=doc["created_at"],
+        )
+
+
+class BoardResponse(BaseModel):
+    """Admin kanban board response grouping cards by status (Requirements: 1.1–1.5)."""
+
+    under_review: list[BoardFeatureCard] = []
+    planned: list[BoardFeatureCard] = []
+    in_progress: list[BoardFeatureCard] = []
+    completed: list[BoardFeatureCard] = []
+
+
+class AdminStatusUpdate(BaseModel):
+    """Admin status-update request body (Requirements: 1.3).
+
+    Pydantic rejects any value not in `FeatureStatus` with a 422 response,
+    so no additional validation is required here.
+    """
+
+    status: FeatureStatus
+
+
+class RoadmapCard(BaseModel):
+    """Lightweight public roadmap card (Sprint 5B). Separate from
+    BoardFeatureCard so the two can evolve independently (Req 1.5)."""
+
+    id: str
+    title: str
+    category: FeatureCategory
+    status: FeatureStatus
+    vote_count: int
+    comment_count: int
+    author_name: str
+    created_at: datetime
+
+    @classmethod
+    def from_mongo(cls, doc: dict[str, Any]) -> "RoadmapCard":
+        return cls(
+            id=str(doc["_id"]),
+            title=doc["title"],
+            category=doc["category"],
+            status=doc["status"],
+            vote_count=doc["vote_count"],
+            comment_count=doc["comment_count"],
+            author_name=doc["author_name"],
+            created_at=doc["created_at"],
+        )
+
+
+class RoadmapResponse(BaseModel):
+    """Public roadmap endpoint response payload (Sprint 5B, Req 1.4)."""
+
+    planned: list[RoadmapCard] = []
+    in_progress: list[RoadmapCard] = []
+    completed: list[RoadmapCard] = []

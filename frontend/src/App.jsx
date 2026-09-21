@@ -12,6 +12,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+import AdminBoardPage from "./pages/AdminBoardPage";
 import FeatureDetailsPage from "./pages/FeatureDetailsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
@@ -49,6 +50,14 @@ function App() {
               element={
                 <AdminRoute>
                   <AdminDashboardPage />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="admin/board"
+              element={
+                <AdminRoute>
+                  <AdminBoardPage />
                 </AdminRoute>
               }
             />

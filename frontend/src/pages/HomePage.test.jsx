@@ -6,6 +6,8 @@ import HomePage from "./HomePage";
 import { useHealthCheck } from "../hooks/useHealthCheck";
 import { useFeatureFeed, useDeleteFeature, useCreateFeature, useUpdateFeature } from "../hooks/useFeatures";
 import { useAuth } from "../context/AuthContext";
+import { useToggleVote } from "../hooks/useFeatureVote";
+import { prefersReducedMotion } from "../components/voteAnimation";
 
 // HomePage now composes the rewritten feed (SearchBar/FilterDropdown/
 // Pagination/FeatureCard/CreateFeatureModal/EditFeatureModal/ConfirmDialog)
@@ -17,6 +19,8 @@ import { useAuth } from "../context/AuthContext";
 vi.mock("../hooks/useHealthCheck");
 vi.mock("../hooks/useFeatures");
 vi.mock("../context/AuthContext");
+vi.mock("../hooks/useFeatureVote");
+vi.mock("../components/voteAnimation");
 
 // useFeedQueryParams (unmocked, real) wraps react-router-dom's
 // useSearchParams, which requires a Router ancestor.
@@ -38,6 +42,7 @@ const SAMPLE_FEATURE = {
   author_name: "Ada Lovelace",
   vote_count: 3,
   comment_count: 1,
+  has_voted: false,
   created_at: "2024-01-01T00:00:00Z",
   updated_at: "2024-01-01T00:00:00Z",
 };
@@ -55,6 +60,8 @@ describe("HomePage", () => {
     useDeleteFeature.mockReturnValue({ mutate: vi.fn(), isPending: false });
     useCreateFeature.mockReturnValue({ mutate: vi.fn(), isPending: false });
     useUpdateFeature.mockReturnValue({ mutate: vi.fn(), isPending: false });
+    useToggleVote.mockReturnValue({ isPending: false, mutate: vi.fn() });
+    prefersReducedMotion.mockReturnValue(false);
   });
 
   it("renders the project title", () => {

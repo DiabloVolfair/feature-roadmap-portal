@@ -1,0 +1,25 @@
+{
+  "pbtResults": {
+    "2.2 Write property tests for `build_comment_tree()` — Properties 1, 2, 3": {
+      "status": "passed",
+      "lastRunTimestamp": 1789910885765
+    },
+    "3.5 Write property test for sanitizer idempotence — Property 4": {
+      "status": "passed",
+      "lastRunTimestamp": 1789910975959
+    },
+    "3.6 Write property test for soft-delete tombstone invariant — Property 5": {
+      "status": "passed",
+      "lastRunTimestamp": 1789910976356
+    },
+    "7.4 Write property test for Optimistic_Comment shape — Property 6": {
+      "status": "passed",
+      "lastRunTimestamp": 1789913532556
+    },
+    "9.1 Write property test for submit button disabled state — Property 7": {
+      "status": "passed",
+      "lastRunTimestamp": 1789913953627
+    }
+  },
+  "executionHistory": {}
+}
